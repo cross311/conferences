@@ -214,3 +214,53 @@ In your function to get the routes, you will want to return an array of json obj
 * title
 
 Url can contain paramters, they are just : starting words.  ``` /search/:search ```.  You can gain access to these url parameters by adding a dependancy to routeParams.
+
+## AngularJs Services
+
+Services in angualarjs are used to put code that you willneed to use accross all your layers, so that you dont have to have teh logic across all the code.  What kind of things do you see that use the sevices?  The first one that you will probably create is loading data from your server side.  You might access user data across many different controllers, but you dont want to copy the data calls everywhere, so just put it in a service.
+
+The presentor has a service that handles all his logging.  he even attached the logging to create on teh screen toast messages.
+
+How do you create a service??  In angular creating a service is actually called factory and it creates a singleton class across teh whole appliaction.
+
+One of the presentors best practices is to create a common service that is a fecade of all the services that you will commonly add to controllers.  This allows you to not have to have a super long constructor signature.  it all so also you to put small methods you use everywhere on common without having to create a service for a 10 line method.  The example that he uses for this is a isNumber or textContains method.
+
+*Note: presentor created a bootstrap angular nuget package called: hottowel.angular -pre*
+
+Another presentor best practice for creating a service, is to create a service hash object to return. This service object holds the public api for your service.
+
+```js
+angular.module('app').factory('nameOfMyService', ['dep1','dep2', myServiceFactoryMethod]);
+
+function myServiceFactoryMethod(dep1, dep2){
+	var service = {
+		// my services public methods
+		save: save,
+		getData: getData
+	};
+	
+	return service;
+	
+	function save(){
+		//save code
+	}
+	
+	function getData(){
+		//get data code
+	}
+};
+```
+
+## AngularJs Structuring an App
+
+**Be Consistant, Be Consistant**
+
+Make everything easily findable.  Putting everything in one file, does not make it findable.
+
+You can do folders for types, this works well for small projects.  You can do folders for features, this is better for larger projects.  Good example: [Angular Growth Structure](http://www.johnpapa.net/angular-growth-structure/).
+
+Don't put you js code into the script folder, that is for 3rd party code.  When you mix in your code and 3rd party code it makes it harder to find code and to run lint tools.
+
+*Note: A great website for angular is [Year of Moo](http://yearofmoo.com)*
+
+*Note: A great js library for dates in javascript [Moment.js](http://momentjs.com/).*
