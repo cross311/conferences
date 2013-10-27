@@ -142,7 +142,7 @@ How does angularjs handle di?  when you define a modeule there is an array of mo
 
 ```js
 var myModule = angular.module('myModule', 
-	['ng-route','ng-locale'], 
+	['ng-route','ng-locale', 
 	function(route,locale){
 		//module code
 	}); 
@@ -155,7 +155,7 @@ When defining a controller, he likes to define all the things that he will defin
 Another thing he likes to do is assign this to vm right at the begining.  This gives it more semantical meaning then that and this and me.  This also removes the scoping out issue of this, which gets a lot of people.
 
 ```js
-var myModule = angualar.module('myModule, function(){
+var myModule = angualar.module('myModule', function(){
 	var vm = this;
 	
 	vm.save = save;
@@ -166,7 +166,51 @@ var myModule = angualar.module('myModule, function(){
 });
 ```
 
-## AngularJs Triangle
+## AngularJs Triangle (Directives)
 
-Html is nothing but html.  ViewModels are just js with data.  If you need these two to come together, it is a directive.
+Html is nothing but html.  ViewModels are just js with data.  If you need these two to come together, it is a directive.  Directives will handle creating html for js code.  This is the only place in your code where html and js should play together or know about the other.
 
+Presentor tip, before you create a directive (custom) always make sure that you look at the angularjs docs.  A lot of the time what you are looking for is already in the framework, if it is a common task.  Some examples are dblClick, Click, Blur, etc..
+
+## AngularJs Controllers
+
+Be consistant with how you do controller definitions.  There are a number of ways to do controllers, keeping your team all doing the samething will save a bunch of headaches.  A good way to keep your team to always do thing the same way is to use [SideWaffle](http://sidewaffle.com/).
+
+## AngularJs Dependancies For Controllers
+
+When adding a controller to a module, the signaure is controller name, controller constructor.  But there is a special way that you can pass in the constructor where you can specify what angular needs to pass into your constructor as dependancies.  If you pass teh constructor parameter as an array, where the first elements are strings that match the exact name of dependancy as it was defined on the module.  Then the last parameter is the actual constructor function with a signature that matches he previous elements in the array and in the same order.
+
+```js
+var myController = angular.app('myApp')
+	.controller('myController', ['myExactDependancyName', 'myOtherExactDependancyname',myControllerConstructor]);
+
+function myControllerConstructor(dependancy, otherDependancy){
+};
+```
+
+Notice how the string in the array is an exact name, but in the signature for the controller they are just what ever I want the variable to be named.  Array name must be exact, constructor signature just has to be in the same order as the array but can be any names.
+
+## Setup AngularJs App a runtime
+
+Configuring the routes that your app supports:
+
+```js
+app.config([]);
+```
+
+If there is some code you want to run before your app really starts up.  One reason my be to create global constances like defautl data base urls.
+
+```js
+app.run(function(){});
+```
+
+## AngularJs Routing
+
+In your function to get the routes, you will want to return an array of json objects the represent a route object.  The objects contain attributes:
+
+* url
+* template
+* settings: another hash
+* title
+
+Url can contain paramters, they are just : starting words.  ``` /search/:search ```.  You can gain access to these url parameters by adding a dependancy to routeParams.
