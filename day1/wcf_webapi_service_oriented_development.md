@@ -22,13 +22,14 @@
 #WCF and WebAPI:
 
 ##WCF vs WebAPI:
-* WebAPI has killed WCF --> "The report of my death was an exaggeration."
+* WebAPI has killed WCF --> *"The report of my death was an exaggeration."* - Mark Twain
 * WCF and WebAPI both have their own uses.
 * WebAPI has a much smaller scope and learning curve than WCF.
 * One is NOT a replacement for the other
 * One is NOT better than the other
 * WCF is WAY more feature rich
 * Web API is WAY more interoperable
+     - no tooling necessary
 * WCF is based on SOAP protocol
 * Web API is based on REST architecture
 * WCF DataContracts mirror WebAPI Models
@@ -66,15 +67,20 @@
 ##Sample Project:
 Solution layout
 
-* Essentials.BusinessEngine
-* Essentials.Client
-* Essentials.Contracts
+* **Essentials.BusinessEngine**
+* **Essentials.Client**
+* **Essentials.Contracts**
      * Add ```System.Runtime.Serialization```
      * Add ```System.ServiceModel```
-* Essentials.Host
-* Essentials.Services
+* **Essentials.Host**
+* **Essentials.Services**
      * Services separated from Hosts to allow transport over different avenues (i.e., Not just HTTP).
-* Essentials.WebHost
+* **Essentials.Proxies**
+     - Parallel to Essentials.Services on the client-side
+	      * Has reference to **Essentials.Contracts**
+		  * Proxies extend ```ClientBase<T>``` where ```T``` is your service contract
+		  * Proxies also implement service contract
+* **Essentials.WebHost**
 
 ```DataContract/ServiceContract/OperationContract``` serializer is more forgiving
      
@@ -108,7 +114,53 @@ WCF is the only technology out of Microsoft with meaningful error messages.
 
     The contract name "" could not be found in the listing of contracts for service "".
 	
+Proxies abstract calling the service via ```ClientBase<T>```, i.e.:
 	
+	public ZipCodeData GetZipCodeInfo(string zip)
+	{
+		return Channel.GetZipCodeInfo(zip);
+	}
+	
+This allows you to ignore and not have to implement *insanity-level code*:
+
+    var client = new GeoClient();
+	var data = client.GetZipCodeInfo(text);
+	if (data != null)
+	{
+		// call successful
+	}
+	client.Close();
+	
+Client-side configuration:
+
+    <system.serviceModel>
+	  <client>
+	    <endpoint address="net.tcp://localhost:8009/GeoService"
+                  binding="netTcpBinding"
+		  	      contract="Essentials.Contracts.IGeoService"
+				  name="tcp" />
+	  </client>
+	</system.serviceModel>
+	
+This configuration is what ties together the ```ClientBase<T>``` plumbing.
+The name attribute allows redundancy on service endpoints, i.e. try TCP first and HTTP on failure.
+
+WCF 4.0 and up allows virtualized .svc files (no more physical .svc/.asmx files) by using
+serviceHostingEnvironment:
+
+    <serviceHostingEnvironment>
+	  <serviceActivations>
+	    <add service="Essentials.Services.GeoService" relativeAddress="GeoService.svc" />
+      </serviceActivations>
+	</serviceHostingEnvironment>
+	
+##Instancing and Concurrency
+
+Service instantiation can be *per-call*, *per-session (default)*, *singleton*.
+```InstanceContextMode``` and ```ConcurrencyMode``` control behavior.
+In *per-session* mode, the lifetime of the service instance is tied to the lifetime of the proxy.
+In *singleton* mode, everything sucks, as usual.
+
 #Resources:
 * Miguel Castro course on [PluralSight](wwww.pluralsight.com)
 * SOA at [Twitter]()
