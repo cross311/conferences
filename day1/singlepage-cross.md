@@ -80,3 +80,43 @@ database
 
 People who switched over to smart clients, have been using these concepts for quite a while.  How you do this on the client is pretty much the same, just without plugins and just using the browser.  Same architecture ... different technology
 
+## SPA Features (Presentation FrameWorks)
+
+* Orgnization
+* Page LifeCycle
+* Dependency Mgt
+* MV*
+* Routing
+* UI Interaction
+* Data Binding
+* Services
+
+What is ** NOT **
+
+* Rich Data
+* UI Controls
+* Testing
+* CSS / Styling
+* Your Logic :)
+* Security
+
+Picking which SPA framework based off of the Todo app example. hahahah.  It is not for deciding, but ot see how the framework style looks. Ask **WHY** 5 times before you make any decisions.
+
+A presenstion framework should do presentation well.  jQuery and other frameworks in js are just doing way to much so that puts them in a position where they give you the kitchen sink, but that isnk is not the best.
+
+## Data Binding
+
+With angularjs, your databinding is just {{variable}} with in the html. there is no <%= variable %>.  You should not have to write so much.
+
+When working with attributes that are on html elements, always start with data-.  You techinically do not have too, but in html5 it is a reserved attribute name that does not slow down the browser from trying to see if it understands what you are saying.
+
+## MV*
+
+How to you attached you html to you model to your view. No javascript in the view, an dnot html in the viewModel.  With Angular you should not have to mix these two items.  Putting this information in each, it makes reading and understanding in the long term very hard.  What should the screen present is the view.  The actual data that the needs to be updated or seen is the ViewModel.
+
+Putting you View without having js mixed it, it allows you to make sure that you html is valid.  Putting a view together by appending strings on strings, how do you know that you are writting valid html?  Browsers and other things have been built to do things really well, when you mix js and html you are saying that you dont care that they do it better.
+
+## Dynamic View Composition
+
+View do not have to have everything in them.  Your views should also handle one thing and one thing only.  use views inside of views inside of views.  Then you only have to worry about exactly what you are trying to view in one html file, not everything in one html file.
+
