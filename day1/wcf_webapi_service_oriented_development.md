@@ -160,7 +160,56 @@ Service instantiation can be *per-call*, *per-session (default)*, *singleton*.
 ```InstanceContextMode``` and ```ConcurrencyMode``` control behavior.
 In *per-session* mode, the lifetime of the service instance is tied to the lifetime of the proxy.
 In *singleton* mode, everything sucks, as usual.
+*Per-call* is inherently thread-safe, but not concurrent by default. ```ConcurrencyMode.Multiple``` is necessary for that.
 
+**Best-Practice:** ```InstanceContextMode.PerCall``` and ```ConcurrencyMode.Multiple```.
+
+###Operations:
+* Request/Response
+* One way call
+* Callback
+
+####Request/Response 
+
+This is the default for all operations, even void returns. This blocks the client thread until the request is complete regardless of service concurrency mode.
+
+####One way call 
+
+One-way calls forgo the response. This frees up the client thread immediately after the request is made, but means that the client cannot know that anything went wrong in the service while processing the call.
+     - ```[OperationContract(IsOneWay=true)]``` **must be a void return**
+
+####Callbacks
+
+    public interface IMyCallback
+    {
+    	[OperationContract]
+	    bool ReportProgress();
+	
+    	[OperationContract(IsOneWay=true)]
+	    void PerformCallback();
+    }
+
+Callbacks can pair up with one-way calls, or can provide responses on all methods. This allows the client to free up the main thread while the service executes a long-running process, but still lets the
+
+Callbacks are defined by ```[ServiceContract(CallbackContract=typeof(IMyCallback))]``` and require the proxy to inherit from ```DuplexClientBase<T>```
+	
+Callbacks do **NOT** work with ```basicHttpBinding```, they require ```wsDualHttpBinding```.
+
+
+##Exceptions in Service
+
+* Left alone or rethrown
+    - limited info sent to client - proxy faulted
+* Service can throw ```FaultException```
+    - limited info sent to client - proxy OK
+    - client can only catch ```FaultException```
+* Service can throw ```FaultException<T>```
+	- client can catch ```FaultException<T>``` - proxy OK
+* ```T``` can be exception or custom fault contract
+    - actually any serializeable type
+* ```T``` must be declared in operation contract
+    - included in metadata passed
+	
 #Resources:
 * Miguel Castro course on [PluralSight](wwww.pluralsight.com)
 * SOA at [Twitter]()
