@@ -1,18 +1,3 @@
-#WCF vs WebAPI:
-* WebAPI has killed WCF --> "The report of my death was an exaggeration."
-* WCF and WebAPI both have their own uses.
-* WebAPI has a much smaller scope and learning curve than WCF.
-* One is NOT a replacement for the other
-* One is NOT better than the other
-* WCF is WAY more feature rich
-* Web API is WAY more interoperable
-* WCF is based on SOAP protocol
-* Web API is based on REST architecture
-* WCF DataContracts mirror WebAPI Models
-
-#WCF with WebAPI:
-* Write services in WCF and extend with WebAPI
-
 #SOA:
 * SOA is not just for enterprise-size applications
 * "The decomposition of a system into autonomous or nearly autonomous units of responsibility and exposure."
@@ -33,6 +18,24 @@
      - PITA to setup and work with
 * MSMQ
      - has its own API
+
+#WCF and WebAPI:
+
+##WCF vs WebAPI:
+* WebAPI has killed WCF --> "The report of my death was an exaggeration."
+* WCF and WebAPI both have their own uses.
+* WebAPI has a much smaller scope and learning curve than WCF.
+* One is NOT a replacement for the other
+* One is NOT better than the other
+* WCF is WAY more feature rich
+* Web API is WAY more interoperable
+* WCF is based on SOAP protocol
+* Web API is based on REST architecture
+* WCF DataContracts mirror WebAPI Models
+
+##WCF with WebAPI:
+* Write services in WCF and extend with WebAPI
+
 
 #WCF:
 * What does WCF have that WebAPI doe not?
@@ -61,18 +64,51 @@
 * Configuration
 
 ##Sample Project:
-* Solution layout
-     - Essentials.BusinessEngine
-     - Essentials.Client
-     - Essentials.Contracts
-          - Add System.Runtime.Serialization
-          - Add System.ServiceModel
-     - Essentials.Host
-     - Essentials.Services
-          - Services separated from Hosts to allow transport over different avenues (i.e., Not just HTTP).
-     - Essentials.WebHost
-* ZipCode Database
+Solution layout
+
+* Essentials.BusinessEngine
+* Essentials.Client
+* Essentials.Contracts
+     * Add ```System.Runtime.Serialization```
+     * Add ```System.ServiceModel```
+* Essentials.Host
+* Essentials.Services
+     * Services separated from Hosts to allow transport over different avenues (i.e., Not just HTTP).
+* Essentials.WebHost
+
+```DataContract/ServiceContract/OperationContract``` serializer is more forgiving
      
+* won't break if the service adds more properties that the client doesn't know about
+* ExternsionDataObject (IExtensibleDataObject)
+     - WCF throws extra properties that service doesn't know about into the ExtensionDataObject
+	   in order to minimize/build-up contracts
+* Everything with the DataContract, ServiceContract, OperationContract decorators is opt-in
+*  ```[DataContract]``` on class --> ```[DataMember]``` on properties
+* ```[ServiceContract]``` on class --> ```[OperationContract]``` on methods
+* Shared ```[ServiceContract]``` is an interface, not a class
+
+One ```ServiceHost``` per service:
+     
+	var host = new ServiceHost(typeof(GeoService));
+    host.Open();
+	 
+Service configuration:
+
+    <system.serviceModel>
+	  <services>
+        <service name="Essentials.Services.GeoService">
+		  <endpoint address="net.tcp://localhost:8009/GeoService"
+		            binding="netTcpBinding"
+					contract="Essentials.Contracts.IGeoService" />
+		</service>
+	  </services>
+	</system.serviceModel>
+	
+WCF is the only technology out of Microsoft with meaningful error messages.
+
+    The contract name "" could not be found in the listing of contracts for service "".
+	
+	
 #Resources:
 * Miguel Castro course on [PluralSight](wwww.pluralsight.com)
 * SOA at [Twitter]()
