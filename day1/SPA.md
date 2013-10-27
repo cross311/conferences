@@ -1,4 +1,4 @@
-#
+#First session
 
 ##Single page applications
 
@@ -19,7 +19,7 @@ Also: views, security, SEO, *data*
 - Reduce plumbing
 - Let you focus on translating domain specific knowledge into code
 - Lets you focus on user stories
-#### don't
+#### don't do
 - Rich data, UI controls, testing, styling/CSS, logic, security
 
 ##### SPA features: Organization, Page LifeCycle
@@ -33,3 +33,41 @@ On choosing a framework:
 - supports MV* --
 ##### MVVM -- no JavaScript in the view, no HTML in the ViewModel
 
+
+#Second session-----------------------------------------
+### Getting Angular
+- Nuget -- AngularJS.Core is the minimum install
+
+### Basic usage
+- Attributes vs. mustache syntax: attributes will bind as soon as the HTML loads, as opposed to when the JS loads at the bottom of the page.
+
+###Recommended conventions:
+
+- One convention: put everything you can bind to at the top of your controller.
+- alias 'this' as something semantically meaningful, e.g. vm for viewmodel
+- 'controller as' syntax is new in angular 1.1.2, enables you to do vm.property in the view.
+
+Directive
+  //\\
+//    \\
+JS====HTML
+
+- Check out existing angular directives before trying to implement anything
+- Side waffle: open source templates for VS, by VS team to aid in organization that include angular controller, directive, and module templates. 
+
+### Dependencies
+- Specify your dependencies and inject
+- Dependencies must be specified in the same order when registering the controller as in the function signature
+
+### Setup
+- When your angular app starts -- Angular registers your module (name/dependencies) e.g. app.module()
+- App is configured e.g. (app.config(['$routeProvider', routeConfigurator]));
+- Side note: dynamically adding routes doesn't work well in angular
+- Next app.run() is hit and e.g. calls services that setup data, etc
+
+### Routing
+- Each route has a different config; can use this to set up deep linking and specifying templates to handle parameters
+- Angular uses hashtag routing to handle many routes without leaving the client side
+
+### View Composition
+- Templates placed in ng-view
