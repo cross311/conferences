@@ -120,3 +120,53 @@ Putting you View without having js mixed it, it allows you to make sure that you
 
 View do not have to have everything in them.  Your views should also handle one thing and one thing only.  use views inside of views inside of views.  Then you only have to worry about exactly what you are trying to view in one html file, not everything in one html file.
 
+# AngularJs
+
+Getting angularJs is as easy as doing a nuget package in .Net.  You can also download the framework from the [Angularjs website](http://angularjs.com).  Presentor says that you should install the latest unstable version that is in rc3, so it is not really that unstable.  The big thing in the new version is that all the different services and extras are now in specific modules that are in seperate js files.  You can decide what you need, not just everything.  Recomended starting modules: Core, Route, Animate.
+
+``` install-Package angularjs.core -pre ```
+
+Why the pre?  Since this uses a rc3 nuget says that it should be a prerelease, not a full release.
+
+## Lets write a quick app
+
+*NOTE: For most of us, putting the script tags at the end of the body is nothing new.  if that is new to you, I would very much recommend following this standard.*
+
+Two-way data binding and One-way data binding are done in different ways.  What is the difference between two-way and one-way?  One-way will keep the ui up-to-date as he model changes. Two-way keeps the model up to date as he user puts some input into the form and then also keeps the ui up to date as the model changes.  One-way binding can be done with {{variable}} or as a ng-bind attribute.  Two-way is always done as an attribute ng-model.
+
+Why would I do a mustache (*{{variable}}*) compared to ng-bind?  Well the only time that you should really use the attribute version is on the page that is initially loaded when the browser starts up.  Thiswill keep the user from seeing mustaches as teh javascript loads. If you do the mustache for a split second, or however long it takes to load angularjs on teh browswer, the user will see he mustache on the page.
+
+### DI
+
+How does angularjs handle di?  when you define a modeule there is an array of modules names that is taken in as the second param.  This array is a list of strings of module names that your module you are creating releys on.
+
+```js
+var myModule = angular.module('myModule', 
+	['ng-route','ng-locale'], 
+	function(route,locale){
+		//module code
+	}); 
+```
+
+## Coding conventions of Presentor
+
+When defining a controller, he likes to define all the things that he will define too.  it is very similar to doing the properties at the top of a class.  Even for functions that you are going to make available to the outside world, add the variable pointing to the function at the top.  Don't write the function inline, the point of puting all this stuff at top is to make everything glancable.  If everything is defined inline then there will be a lot of scrolling just to glance at what is available to bind against.
+
+Another thing he likes to do is assign this to vm right at the begining.  This gives it more semantical meaning then that and this and me.  This also removes the scoping out issue of this, which gets a lot of people.
+
+```js
+var myModule = angualar.module('myModule, function(){
+	var vm = this;
+	
+	vm.save = save;
+	
+	fucntion save(){
+	// code for save
+	};
+});
+```
+
+## AngularJs Triangle
+
+Html is nothing but html.  ViewModels are just js with data.  If you need these two to come together, it is a directive.
+
