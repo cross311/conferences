@@ -48,3 +48,10 @@ $select=Id,Firstname,ImageSource
 
 Have server side code for .Net and Mongo.  A good place to learn about this: [Learn Breeze](http://learn.breezejs.com).
 
+## Data Context
+
+This is on you.  The pattern is Unit-Of-Work.  Datacontext has a breeze EntityManager shared with repositories (one cache across app).
+
+The datacontext just has properties with each entity repo, which makes the data context just a fecade for repositories.
+
+Has one method on the datacontext saveChanges, that saves all the changes for all things changed in the context.
