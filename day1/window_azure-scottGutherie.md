@@ -30,3 +30,56 @@ Talks about moving Azure management into your own data center.  Allowing you to 
 ### Sql Database
 
 Comes clustered, fully managed service.  Creates a database during the presentation to prove how long it takes for it to spawn up, it took about 5 seconds.  The dashboard that comes with the managed sql, shows a graph for deadlocks, failed connections, successful connections. Do not have to worry about patching, and it is managed with 3 different dbs on different servers.  Demoed scaling up to a 150 db database from 1 gb took around 4 seconds.  You can automatically setup a database backups, and you can add saving to a storage account that will force a distance of really far away.
+
+### Websites
+
+Build with asp.net, node.js, php.  Deploy in seconds with ftp, git, or tfs.  To create the website through the management dashboard took around 5 seconds.  Created a default web app and did a visual studio publish setting.  You can choose from a drop down of azure spun up applications.  Took around 4 seconds for a full asp.net mvc appliaction to the azure cloud.  Everyone gets 10 free web sites for life!  The dashboard for the machine in azure gives you cpu time, data in, data out, http server errors, requests.  The web analytics was pretty much in real time.  The free teir is about 150 thousand requests a day.  In the standard web site mode you can run more then one application on the same machine to limit the price for the machine since you get a pure vm to you.
+
+Azure uses a deployment service to handle the deployment of new application updates to the actual machines that are running the application.  The deployment is not handled on the instance machine.  The website service is very opinionated to use best practices.  
+
+### Auto Scaling
+
+They offer Auto scaling so that peak load you have more servers, allowing better utilization and less money.
+
+Offer Auto scalling for cpu utilization, queue size, and some other server metrics.  Claiming 60 to 80 percent savings from having running your normal machine count.  You can also setup pre-warming based on a schedule, day time, night time, certain day.
+
+### Logging and Telemetry
+
+New Visual Studio allows you to stream logs to your local machine in real time.  He used System.Diagnostics trace statement.
+
+There is a new feature called developer analytics, that allows you to select different providers.  The one he demos is NewRelic.  He installs the NewRelic package onto his site view the nuget package manager.
+
+### HDInsight (Hadoop)
+
+Can create a cluster from the Azure dashboard.  The dashbaord shows how many tasks are running.  Guthie goes over pretty much what hadoop will be good to use for.
+
+Giving a oversight how Microsoft is actually using azure.  Games are an example of what they are doing, some of the virtual worlds are deployed on Azure.  Halo 4 is using the hadoop cluster to track gamepplay quality, user behavior, etc by time.  Short timeline, small team, not hadoop experts.  Halo 4 stores small bits of data are logged to azure in blob storage.  Runs the data through a stripper of pii.
+
+Excel now has a plugin that is free that allows you to pull data in from HDFS and Azure HDInsight.  First split by delimeter then first row as headers.  Changes the type of a few of the columns to match what the actual types are, like date or int.  Does not just download the whole amount of data, that would be bad.  After you figure out how you want to download it, it brings down around 1000 rows.  Uses another excel plugin called Power Map that can put geo data onto a map within excel.  Start by picking the column that is the geo location, he chose states.  Then you choose what you want to layer it with, he chooses avg number of minutes that the user plays. (INSERT IMAGE FROM PHONE).  He then compares length of game play and number of weapons used (INSERT IMAGE) and notices that this is not really a factor for keeping people play.  However if you look it at how many people you play with, makes you play longer.
+
+
+### Active Directory
+
+You can now run active directory in the cloud that can allow be synced with your corperate active directory.  Active directories in the cloud are free!  If you want to keep your corp active directory synced with Azure, a downloadable tool is easily intalled to keep the two synced.  Also comes with cloud based Multi-Factor authentication out of the box.  However Mult-Factor is not included free!  But all the other parts of Active directory are all free.
+
+### Other
+
+* Big data
+* database
+* storage
+* traffic
+* cloud services
+* caching
+* messaging
+* identity
+* web
+* mobile
+* media
+* cdn
+* biztalk
+
+*Note: MSDN save quite a bit of money on Azure services.  All around 90%*
+
+As a developer with a msdn license you get up to $150 a month.  They will also auto turn things off if you hit your spending limit.
+
+[Friday With Azure](http://friday.azure.com)
