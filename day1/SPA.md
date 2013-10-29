@@ -1,0 +1,150 @@
+# 0 to 60 with Single Page Apps and HTML5
+
+##Angular.js
+
+###Single page applications
+
+Focus on ways to turn parts of existing legacy apps into SPAs: Great way of modularizing monolithic apps (can roll out piecemeal)
+
+###What do we want in a SPA? 
+- DI: manage separation of concerns, 
+- Routing (+ deep linking), 
+- MV* have clean models, 
+- data binding, make it easier to add new AJAX functionality etc
+- DOM: Most expensive thing to do in a page: changing the DOM (reflow)
+Also: views, security, SEO, *data*
+
+#####SPAs - get necessary code into page
+
+### Presentation frameworks
+#### do
+- Reduce plumbing
+- Let you focus on translating domain specific knowledge into code
+- Lets you focus on user stories
+#### don't do
+- Rich data, UI controls, testing, styling/CSS, logic, security
+
+##### SPA features: Organization, Page LifeCycle
+On choosing a framework:
+> "They're gonna pick what to do on a 70-page app based on what they learned building a to-do list app" - John Papa
+
+### Angular overview
+- HTML5 convention: all new attributes should start with data- (reserved). So for angular, use data-ng-click et al.
+- jQuery is unnecessary and probably takes more code
+- handles databinding, not just on functions, but on selectors
+- supports MV* --
+##### MVVM -- no JavaScript in the view, no HTML in the ViewModel
+
+### Getting Angular
+- Nuget -- AngularJS.Core is the minimum install
+
+### Basic usage
+- Attributes vs. mustache syntax: attributes will bind as soon as the HTML loads, as opposed to when the JS loads at the bottom of the page.
+
+###Recommended conventions:
+
+- One convention: put everything you can bind to at the top of your controller.
+- alias 'this' as something semantically meaningful, e.g. vm for viewmodel
+- 'controller as' syntax is new in angular 1.1.2, enables you to do vm.property in the view.
+
+Directive
+  //\\
+//    \\
+JS====HTML
+
+- Check out existing angular directives before trying to implement anything
+- Side waffle: open source templates for VS, by VS team to aid in organization that include angular controller, directive, and module templates. 
+
+### Dependencies
+- Specify your dependencies and inject
+- Dependencies must be specified in the same order when registering the controller as in the function signature
+
+### Setup
+- When your angular app starts -- Angular registers your module (name/dependencies) e.g. app.module()
+- App is configured e.g. (app.config(['$routeProvider', routeConfigurator]));
+- Side note: dynamically adding routes doesn't work well in angular
+- Next app.run() is hit and e.g. calls services that setup data, etc
+
+### Routing
+- Each route has a different config; can use this to set up deep linking and specifying templates to handle parameters
+- Angular uses hashtag routing to handle many routes without leaving the client side
+
+### View Composition
+- Templates placed in ng-view
+
+### Services
+- Provide separation for reusable code, remote data calls, logging, and local storage
+- HotTowel.Angular NuGet package - gives you a framework for an empty SPA
+- Use the revealing module pattern -- aka in your datacontext constructor do a var service = { members you want to expose } and then return it; this prevents somebody from running code against a member you want to have internal. _internal naming might also be helpful.
+
+### Structure and Organization
+- Lots of files to organize! Be consistent.
+
+### Animations and Last Demo
+- Included in HotTowel
+- WebEssentials (for VS) can make sure any missing properties (e.g. browser-specific) are available and give you compatibility info for different browser versions
+- yearofmoo.com is developing a library of CSS animations
+- CSS3 > JS, but requires a modern browser
+- moment.js: library that modernizes date handling in JS
+
+## Breeze.js ------------------------------------------------
+> "We don't charge for it because we haven't figured out how to." - Ward Bell
+- Recommended presentation framework is Angular; Knockout is supported as well.
+
+### Query
+1. Create a query
+2. Execute a query (with success/failure handling)
+3. Make the result observable/data bind/etc
+
+LINQ-like client query, e.g. var query = EntityQuery.from('Speakers').where('lastName', 'startsWith', 'S').orderBy('firstName, lastName').select('id, 	firstName, lastName, imageSource').skip(...).take(...).using(queryStrategy.Local?...);
+- Generates OData-query URL
+##### learn.breezejs.com Online Query Tutorial
+
+- Uses promises to make chained async easier using Q.js (some analogues to .NET await)
+- Incompatible with $q (angular promises)
+- to$q bridge
+
+### Caching
+- Wrapped by Entity Manager; it's a structured cache that knows its types and also acts as a gateway (or repo, loosely) to the server
+#### Entity
+- Data + Identity + State 
+- generated from metadata so you don't have to write classes 
+- Extensible via custom constructor and/or initializer
+#### Metadata
+- Generated by Entity Framework or OData
+- Otherwise you can write it (there's an API)
+- Can do both dirty checking and change notifications in general; using pub sub can broadcast this to any view (or elsewhere)
+
+### Datacontext & Repositories
+- Datacontext service encapsulates all data access
+- Has an entity manager
+- Should delegate to repositories when it gets "too big"
+#### Model-level validation
+- data-z-validate 
+- (must also specify data-ng-model)
+- works inside ng-repeat
+- can create your own validators
+
+### Breeze on the Server
+- Typically only a single API controller is needed to handle all the types 
+- OData attributes restrict what client can ask for (or how much of it)
+- Examples available for Ruby on Rails, Python, MongoDB, node.js, document objects, complex type arrays, etc
+- Super minimal changes required to run on different server
+
+###### Content from this workshop including sample code and links is available at http://johnpapa.net/wardlovesbacon.zip
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
