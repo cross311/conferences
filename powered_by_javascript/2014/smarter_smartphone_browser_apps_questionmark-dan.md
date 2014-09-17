@@ -1,4 +1,4 @@
-Node.js Now!
+Are Smartphone Browser Apps Getting Smarter?
 ============
 Presenter: Tomomi Imura (@girlie_mac)
 Writer: Dan Hoizner

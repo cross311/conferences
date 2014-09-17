@@ -1,6 +1,6 @@
 Sails.js!
 ============
-Presenter: Dan Shaw
+Presenter: ??
 Writer: Dan Hoizner
 
 # Problem
