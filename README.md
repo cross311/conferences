@@ -14,3 +14,4 @@ A collection of notes from all the conferences I and my friends have attended.
 ## Contributers
 
  - [Connor Ross](https://github.com/cross311)
+ - [Dan Hoizner](https://github.com/dhoizner)
