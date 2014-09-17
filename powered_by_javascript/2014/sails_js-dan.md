@@ -69,3 +69,6 @@ Writer: Dan Hoizner
     - ExternalUsers - DB2
   - Join/associate across databases
 
+# Resources
+* [Sailscasts](http://irlnathan.github.io/sailscasts/)
+* [Modern Web](http://modernweb.com/category/node-js/)
